@@ -1,15 +1,20 @@
 import java.util.Random;
 
+/*
+ Kth Element Selection Problem:
+ Given a collection of unsorted elements (possibly an array), it is required to find the kth smallest element
+ among this collection such that, when k = 0, the element is the minimum element in the collection, and when
+ k = collection.length() - 1, the element is the maximum element in the collection.
+ */
 public class KthElementSelector {
-    /*
-     Kth Element Selection Problem:
-     Given a collection of unsorted elements (possibly an array), it is required to find the kth smallest element
-     among this collection such that, when k = 0, the element is the minimum element in the collection, and when
-     k = collection.length() - 1, the element is the maximum element in the collection.
-     */
 
-    /*
-    # TODO: Comment randomizedApproach()
+    /**
+     * This function employs a randomized approach to find the kth smallest element in an array. It calls
+     * the 'randomSelect' function, which recursively partitions and selects elements to determine the kth
+     * smallest element. The algorithm randomly selects pivot elements to optimize performance.
+     * @param elements An unsorted array of unique integers.
+     * @param k The rank of the element to be retrieved, 0 based ranking.
+     * @return The kth smallest element (element whose rank is k) in the given unsorted array.
      */
     public static int randomizedApproach(int[] elements, int k){
         return randomSelect(elements, 0, elements.length - 1, k);
@@ -20,8 +25,16 @@ public class KthElementSelector {
         if(leftIdx == rightIdx)
             return elements[leftIdx];
 
-
-        return 0;
+        int pivotIdx = randomPartition(elements, leftIdx, rightIdx);
+        int pivotRank = pivotIdx - leftIdx + 1;
+        // found the kth element
+        if(k == pivotRank)
+            return elements[pivotIdx];
+        // recursive cases
+        if(k < pivotRank)
+            return randomSelect(elements, leftIdx, pivotIdx - 1, k);
+        else
+            return randomSelect(elements, pivotIdx + 1, rightIdx, k - pivotRank);
     }
 
     /*
@@ -33,14 +46,9 @@ public class KthElementSelector {
         Random random = new Random();
         int randomIdx = leftIdx + random.nextInt(rightIdx - leftIdx + 1);
         swap(elements, leftIdx, randomIdx);
-        return partition(elements, leftIdx, rightIdx);
+        return partition(elements, leftIdx, rightIdx);      // after picking the random pivot, use the normal partition() method.
     }
 
-    private static void swap(int[] elements, int i, int j){
-        int tempElement = elements[i];
-        elements[i] = elements[j];
-        elements[j] = tempElement;
-    }
 
     // Normal partition() implementation, which uses the first element of the array as a pivot element.
     // Will be utilized by other versions of partitioning methods, such as randomPartition() method.
@@ -59,6 +67,12 @@ public class KthElementSelector {
         }
         swap(elements, i, leftIdx);
         return i;
+    }
+
+    private static void swap(int[] elements, int i, int j){
+        int tempElement = elements[i];
+        elements[i] = elements[j];
+        elements[j] = tempElement;
     }
 
     /*
