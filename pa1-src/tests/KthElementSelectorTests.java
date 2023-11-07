@@ -1,5 +1,4 @@
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -22,30 +21,30 @@ public class KthElementSelectorTests {
 
     static Stream<Arguments> generateParameters() {
         Random rand = new Random();
-        int arraySize = rand.nextInt(1000000) + 1; // Random size between 1 and 1,000,000
+        int arraySize = rand.nextInt(10_000_000) + 1; // Random size between 1 and 10 ^ 7
         Set<Integer> uniqueNumbers = new HashSet<>();
         int[] randomArray = new int[arraySize];
 
         for (int i = 0; i < arraySize; i++) {
             int randomNumber;
             do {
-                randomNumber = rand.nextInt(1000000000); // Generate a random integer between 0 and 1,000,000,000
+                // Generate a random integer between -10^9 and 10 ^ 9
+                randomNumber = rand.nextInt(2_000_000_000) - 1_000_000_000;
             } while (uniqueNumbers.contains(randomNumber)); // Continue generating until it's unique
             uniqueNumbers.add(randomNumber);
             randomArray[i] = randomNumber;
         }
 
-        return Stream.of(Arguments.of(randomArray, rand.nextInt(randomArray.length)));
+        return Stream.of(Arguments.of(randomArray, rand.nextInt(randomArray.length) + 1));
     }
 
     @ParameterizedTest
     @MethodSource("generateParameters")
     @DisplayName("Testcase: Kth Element Selection - Randomized Approach")
     public void test_randomizedSelection(int[] arr, int randomRank){
-        System.out.println(Arrays.toString(arr));
-        int actualMedian = KthElementSelector.randomizedApproach(arr,randomRank + 1);       // ranking is 1 based index.
+        int actualMedian = KthElementSelector.randomizedApproach(arr,randomRank);       // ranking is 1 based index.
         Arrays.sort(arr);
-        int expectedMedian = arr[randomRank];
+        int expectedMedian = arr[randomRank - 1];
         assertEquals(expectedMedian, actualMedian);
     }
 
@@ -53,22 +52,19 @@ public class KthElementSelectorTests {
     @MethodSource("generateParameters")
     @DisplayName("Testcase: Kth Element Selection - Deterministic Approach")
     public void test_deterministicSelection(int[] arr, int randomRank){
-        System.out.println(Arrays.toString(arr));
-        int actualMedian = KthElementSelector.deterministicApproach(arr,randomRank + 1);
+        int actualMedian = KthElementSelector.deterministicApproach(arr,randomRank);
         Arrays.sort(arr);
-        int expectedMedian = arr[randomRank];
+        int expectedMedian = arr[randomRank - 1];
         assertEquals(expectedMedian, actualMedian);
     }
 
-    //    @Disabled
     @ParameterizedTest
     @MethodSource("generateParameters")
     @DisplayName("Testcase: Kth Element Selection - Naive Approach")
     public void test_naiveSelection(int[] arr, int randomRank){
-        System.out.println(Arrays.toString(arr));
-        int actualMedian = KthElementSelector.naiveApproach(arr,randomRank + 1);
+        int actualMedian = KthElementSelector.naiveApproach(arr,randomRank);
         Arrays.sort(arr);
-        int expectedMedian = arr[randomRank];
+        int expectedMedian = arr[randomRank - 1];
         assertEquals(expectedMedian, actualMedian);
     }
 }
