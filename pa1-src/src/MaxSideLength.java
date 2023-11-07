@@ -67,7 +67,8 @@ public class MaxSideLength {
 
         // combine
         int[][] nearestPoints = getMinOfPoints(leftNearestPoints, rightNearestPoints);
-        int[][] pointsInStripe = getPointsInStripe(yPoints, verticalLineValue, computeEuclideanDistance(nearestPoints));          // points that fall in 2 * delta around the vertical line (delta in each side) SORTED BY THE Y-COORDINATE
+        // points that fall in 2 * delta around the vertical line (delta in each side) SORTED BY THE Y-COORDINATE
+        int[][] pointsInStripe = getPointsInStripe(yPoints, verticalLineValue, computeEuclideanDistance(nearestPoints));
         int[][] nearestPointsInStripe = getNearestPointsInStripe(pointsInStripe);
         if(nearestPointsInStripe != null
                 && computeEuclideanDistance(nearestPointsInStripe) < computeEuclideanDistance(nearestPoints)) {
@@ -80,7 +81,7 @@ public class MaxSideLength {
 
     /**
      * Computes the side length of the square formed by the closest pair of points.
-     * Which is essentially the maximum difference between either the x-coordinates or the y-coordiantes
+     * Which is essentially the maximum difference between either the x-coordinates or the y-coordinates
      * of those points.
      * @param closestPair A 2D array containing the closest pair of points.
      * @return The side length of the square around the closest pair of points.

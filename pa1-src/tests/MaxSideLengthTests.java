@@ -56,6 +56,7 @@ public class MaxSideLengthTests {
         long optimizedSolution = maxSideLength.solve(fileName);
         assertEquals(naiveSolution, optimizedSolution);
     }
+
     private long naiveApproach(String fileName_){
         int[][] points = scanInput(fileName_);
         if(points.length < 2)
