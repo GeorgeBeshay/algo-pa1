@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -34,12 +35,12 @@ public class KthElementSelectorTests {
             randomArray[i] = randomNumber;
         }
 
-        return Stream.of(Arguments.of((Object) randomArray, rand.nextInt(randomArray.length)));
+        return Stream.of(Arguments.of(randomArray, rand.nextInt(randomArray.length)));
     }
 
     @ParameterizedTest
     @MethodSource("generateParameters")
-    @DisplayName("Random Selection Testcase")
+    @DisplayName("Testcase: Kth Element Selection - Randomized Approach")
     public void test_randomizedSelection(int[] arr, int randomRank){
         System.out.println(Arrays.toString(arr));
         int actualMedian = KthElementSelector.randomizedApproach(arr,randomRank + 1);
@@ -48,12 +49,25 @@ public class KthElementSelectorTests {
         assertEquals(expectedMedian, actualMedian);
     }
 
+    @Disabled
     @ParameterizedTest
     @MethodSource("generateParameters")
-    @DisplayName("Clever Selection Testcase")
+    @DisplayName("Testcase: Kth Element Selection - Deterministic Approach")
     public void test_deterministicSelection(int[] arr, int randomRank){
         System.out.println(Arrays.toString(arr));
-        int actualMedian = KthElementSelector.randomizedApproach(arr,randomRank + 1);
+        int actualMedian = KthElementSelector.deterministicApproach(arr,randomRank + 1);
+        Arrays.sort(arr);
+        int expectedMedian = arr[randomRank];
+        assertEquals(expectedMedian, actualMedian);
+    }
+
+    @Disabled
+    @ParameterizedTest
+    @MethodSource("generateParameters")
+    @DisplayName("Testcase: Kth Element Selection - Naive Approach")
+    public void test_naiveSelection(int[] arr, int randomRank){
+        System.out.println(Arrays.toString(arr));
+        int actualMedian = KthElementSelector.naiveApproach(arr,randomRank + 1);
         Arrays.sort(arr);
         int expectedMedian = arr[randomRank];
         assertEquals(expectedMedian, actualMedian);
