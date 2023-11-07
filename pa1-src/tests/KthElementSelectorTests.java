@@ -49,7 +49,6 @@ public class KthElementSelectorTests {
         assertEquals(expectedMedian, actualMedian);
     }
 
-    @Disabled
     @ParameterizedTest
     @MethodSource("generateParameters")
     @DisplayName("Testcase: Kth Element Selection - Deterministic Approach")
