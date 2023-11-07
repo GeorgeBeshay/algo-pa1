@@ -43,7 +43,7 @@ public class KthElementSelectorTests {
     @DisplayName("Testcase: Kth Element Selection - Randomized Approach")
     public void test_randomizedSelection(int[] arr, int randomRank){
         System.out.println(Arrays.toString(arr));
-        int actualMedian = KthElementSelector.randomizedApproach(arr,randomRank + 1);
+        int actualMedian = KthElementSelector.randomizedApproach(arr,randomRank + 1);       // ranking is 1 based index.
         Arrays.sort(arr);
         int expectedMedian = arr[randomRank];
         assertEquals(expectedMedian, actualMedian);
@@ -61,7 +61,7 @@ public class KthElementSelectorTests {
         assertEquals(expectedMedian, actualMedian);
     }
 
-    @Disabled
+    //    @Disabled
     @ParameterizedTest
     @MethodSource("generateParameters")
     @DisplayName("Testcase: Kth Element Selection - Naive Approach")

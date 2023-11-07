@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -14,7 +15,7 @@ public class KthElementSelector {
      * the 'randomSelect' function, which recursively partitions and selects elements to determine the kth
      * smallest element. The algorithm randomly selects pivot elements to optimize performance.
      * @param elements An unsorted array of unique integers.
-     * @param k The rank of the element to be retrieved, 0 based ranking.
+     * @param k The rank of the element to be retrieved, 1 based ranking.
      * @return The kth smallest element (element whose rank is k) in the given unsorted array.
      */
     public static int randomizedApproach(int[] elements, int k){
@@ -72,11 +73,19 @@ public class KthElementSelector {
     }
 
     // --------------------------- Kth Element Selection: Naive Approach ---------------------------
-    /*
-    # TODO: Comment naiveApproach()
+
+    /**
+     * This function employs a naive approach to find the kth smallest element in an array.
+     * It sorts the array of elements
+     * @param elements An unsorted array of unique integers.
+     * @param k The rank of the element to be retrieved, 1 based ranking.
+     * @return The kth smallest element (element whose rank is k) in the given unsorted array.
      */
     public static int naiveApproach(int[] elements, int k){
-        return 0;
+        // utilizing the java built in Arrays.sort() method which works in O(n log n).
+        // sorting inplace, meaning that the elements array will be sorted calling this function.
+        Arrays.sort(elements);
+        return elements[k - 1];     // subtracting 1, because the rank is 1 index based.
     }
 
     // --------------------------- Utilities methods to be used by the primary methods ---------------------------
