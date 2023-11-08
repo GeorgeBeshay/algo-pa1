@@ -31,3 +31,6 @@ bin/
 *.iml
 
 .idea
+
+tests/MaxSideLength_Inputs/10p6.txt
+tests/MaxSideLength_Inputs/10p7.txt

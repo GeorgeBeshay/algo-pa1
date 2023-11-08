@@ -1,8 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Given a set of two-dimensional points, the goal is to compute the maximum side length  of the
@@ -17,8 +15,10 @@ public class MaxSideLength {
      * @param args Command-line arguments (not used in this example).
      */
     public static void main(String[] args) {
+        if(args.length < 1)
+            throw new RuntimeException("Input file was not passed as an argument.");
         MaxSideLength maxSideLength = new MaxSideLength();
-        System.out.println(maxSideLength.solve("src/p2_input.txt"));
+        System.out.println(maxSideLength.solve(args[0]));
     }
 
     /**
@@ -155,10 +155,10 @@ public class MaxSideLength {
     private boolean isInSpecifiedPartition(int[] point, int[] partitioningPoint, boolean inLeft){
         return (
                 inLeft &&
-                ((point[0] < partitioningPoint[0]) || ((point[0] == partitioningPoint[0]) && (point[1] <= partitioningPoint[1])))
+                        ((point[0] < partitioningPoint[0]) || ((point[0] == partitioningPoint[0]) && (point[1] <= partitioningPoint[1])))
         ) || (!inLeft &&
-                        ((point[0] > partitioningPoint[0]) || ((point[0] == partitioningPoint[0]) && (point[1] > partitioningPoint[1])))
-                );
+                ((point[0] > partitioningPoint[0]) || ((point[0] == partitioningPoint[0]) && (point[1] > partitioningPoint[1])))
+        );
     }
 
     /**
@@ -195,7 +195,7 @@ public class MaxSideLength {
      */
     private int[][] getMinOfPoints(int[][] leftPoints, int[][] rightPoints){
         if(computeEuclideanDistance(leftPoints[0], leftPoints[1]) <=
-                        computeEuclideanDistance(rightPoints[0], rightPoints[1]))
+                computeEuclideanDistance(rightPoints[0], rightPoints[1]))
             return leftPoints;
         else
             return rightPoints;
@@ -207,8 +207,11 @@ public class MaxSideLength {
      * @param leftIdx Index of the left boundary in the current search interval.
      * @param rightIdx Index of the right boundary in the current search interval.
      * @return A 2D array containing the closest pair of points within the specified range.
+     * @throws RuntimeException if the base case requires at least 2 points.
      */
     private int[][] baseCase(int[][] xPoints, int leftIdx, int rightIdx){
+        if(rightIdx - leftIdx + 1 < 2)
+            throw new RuntimeException("Base Case Requires 2 points at least.");
         int[][] nearestPoints = new int[2][2];
         long smallestDistance = Long.MAX_VALUE;
 
@@ -265,13 +268,37 @@ public class MaxSideLength {
             int numberOfPoints = scanner.nextInt();
             points = new int[numberOfPoints][2];
 
+            // to check that the input contains no duplicates
+            HashMap<Integer, Set<Integer>> duplicatesCheck = new HashMap<>();
+
             for(int i = 0 ; i < numberOfPoints ; i++){
                 points[i][0] = scanner.nextInt();
                 points[i][1] = scanner.nextInt();
+                checkInput(points[i], duplicatesCheck);
             }
+
             return points;
         } catch (FileNotFoundException E){
             throw new RuntimeException("Input file wasn't found.");
+        }
+    }
+
+    /**
+     * Checks the validity of a 2D point and ensures that there are no duplicates.
+     * @param point The 2D point to be checked, represented as an array [x, y].
+     * @param duplicatesCheck A HashMap used to track and check for duplicate points.
+     * @throws RuntimeException if the input point is invalid or if a duplicate point is detected.
+     */
+    private static void checkInput(int[] point, HashMap<Integer, Set<Integer>> duplicatesCheck){
+        if(duplicatesCheck.containsKey(point[0])
+                && duplicatesCheck.get(point[0]).contains(point[1]))
+            throw new RuntimeException("Invalid Input, duplicates are not allowed");
+        if(duplicatesCheck.containsKey(point[0]))
+            duplicatesCheck.get(point[0]).add(point[1]);
+        else {
+            HashSet<Integer> tempSet = new HashSet<>();
+            tempSet.add(point[1]);
+            duplicatesCheck.put(point[0], tempSet);
         }
     }
 }
